@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.Mapper.ArticleMapper">
+    <sql id="table">
+        article
+    </sql>
+    <sql id="column">
+        user_id, article_title, article_content,
+        article_view_count, article_create_time, article_update_time,
+        article_is_comment, article_status, article_summary
+    </sql>
+    <sql id="articleInfoColumn">
+        <trim suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="articleTitle != null">article_title,</if>
+            <if test="articleContent != null">article_content,</if>
+
+            <if test="articleViewCount != null">article_view_count,</if>
+            <if test="articleCreateTime != null">article_create_time,</if>
+            <if test="articleUpdateTime != null">article_update_time,</if>
+
+            <if test="articleIsComment != null">article_is_comment,</if>
+            <if test="articleStatus != null">article_status,</if>
+            <if test="articleSummary != null">article_summary,</if>
+        </trim>
+    </sql>
+    <sql id="articleInfoValue">
+        <trim suffixOverrides=",">
+            <if test="userId != null">#{userId, jdbcType=INTEGER},</if>
+            <if test="articleTitle != null">#{articleTitle, jdbcType=VARCHAR},</if>
+            <if test="articleContent != null">#{articleContent, jdbcType=VARCHAR},</if>
+
+            <if test="articleViewCount != null">#{articleViewCount, jdbcType=INTEGER},</if>
+            <if test="articleCreateTime != null">#{articleCreateTime, jdbcType=TIMESTAMP},</if>
+            <if test="articleUpdateTime != null">#{articleUpdateTime, jdbcType=TIMESTAMP},</if>
+
+            <if test="articleIsComment != null">#{articleIsComment, jdbcType=BOOLEAN},</if>
+            <if test="articleStatus != null">#{articleStatus, jdbcType=TINYINT},</if>
+            <if test="articleSummary != null">#{articleSummary, jdbcType=VARCHAR},</if>
+        </trim>
+    </sql>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="article_id" keyProperty="articleId" parameterType="com.blog.entity.Article">
+        insert into
+        <include refid="table"/> (
+        <include refid="articleInfoColumn"/>
+        )
+        values (
+        <include refid="articleInfoValue"/>
+        )
+    </insert>
+
+    <select id="selectAll" resultType="Article">
+        select * 
+        from 
+        <include refid="table"></include>
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultType="Article">
+        select *
+        from
+        <include refid="table"/>
+        <where>
+            article_id = #{value}
+        </where>
+    </select>
+
+    <update id="addViewCount" parameterType="Integer">
+        update
+        <include refid="table"/>
+        <set>
+            article_view_count = article_view_count+1
+        </set>
+        <where>
+            article_id in (#{value })
+        </where>
+    </update>
+
+</mapper>

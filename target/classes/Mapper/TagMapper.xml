@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.blog.Mapper.TagMapper">
+    <sql id="tag">tag</sql>
+    <sql id="tag_article">tag_article</sql>
+
+    <select id="selectById" resultType="Tag" parameterType="Integer">
+        select t.*
+        from
+        <include refid="tag_article"/> ta
+         left join
+         <include refid="tag"/> t
+         on ta.tag_id = t.tag_id
+         where ta.article_id = #{value}
+    </select>
+</mapper>
