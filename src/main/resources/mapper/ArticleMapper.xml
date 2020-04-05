@@ -1,280 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.nju.agile.blog.mapper.ArticleMapper">
+<mapper namespace="com.blog.Mapper.ArticleMapper">
+    <sql id="table">
+        article
+    </sql>
+    <sql id="column">
+        user_id, article_title, article_content,
+        article_view_count, article_create_time, article_update_time,
+        article_is_comment, article_status, article_summary
+    </sql>
+    <sql id="articleInfoColumn">
+        <trim suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="articleTitle != null">article_title,</if>
+            <if test="articleContent != null">article_content,</if>
 
-    <resultMap id="BaseMap" type="com.nju.agile.blog.entity.Article">
-        <id property="articleId" column="article_id" jdbcType="INTEGER"/>
-        <result property="articleUserId" column="article_user_id" jdbcType="INTEGER"/>
-        <result property="articleTitle" column="article_title" jdbcType="VARCHAR"/>
+            <if test="articleViewCount != null">article_view_count,</if>
+            <if test="articleCreateTime != null">article_create_time,</if>
+            <if test="articleUpdateTime != null">article_update_time,</if>
 
-        <result property="articleViewCount" column="article_view_count" jdbcType="INTEGER"/>
-        <result property="articleCommentCount" column="article_comment_count" jdbcType="INTEGER"/>
-        <result property="articleLikeCount" column="article_like_count" jdbcType="INTEGER"/>
+            <if test="articleIsComment != null">article_is_comment,</if>
+            <if test="articleStatus != null">article_status,</if>
+            <if test="articleSummary != null">article_summary,</if>
+        </trim>
+    </sql>
+    <sql id="articleInfoValue">
+        <trim suffixOverrides=",">
+            <if test="userId != null">#{userId, jdbcType=INTEGER},</if>
+            <if test="articleTitle != null">#{articleTitle, jdbcType=VARCHAR},</if>
+            <if test="articleContent != null">#{articleContent, jdbcType=VARCHAR},</if>
 
-        <result property="articleCreateTime" column="article_create_time" jdbcType="TIMESTAMP"/>
-        <result property="articleUpdateTime" column="article_update_time" jdbcType="TIMESTAMP"/>
-        <result property="articleIsComment" column="article_is_comment" jdbcType="INTEGER"/>
+            <if test="articleViewCount != null">#{articleViewCount, jdbcType=INTEGER},</if>
+            <if test="articleCreateTime != null">#{articleCreateTime, jdbcType=TIMESTAMP},</if>
+            <if test="articleUpdateTime != null">#{articleUpdateTime, jdbcType=TIMESTAMP},</if>
 
-        <result property="articleStatus" column="article_status" jdbcType="INTEGER"/>
-        <result property="articleOrder" column="article_order" jdbcType="INTEGER"/>
-        <result property="articleContent" column="article_content" jdbcType="LONGVARCHAR"/>
-        <result property="articleSummary" column="article_summary" jdbcType="VARCHAR"/>
-    </resultMap>
-
-    <sql id="table">article</sql>
-    <sql id="base_list">
-        article_id, article_user_id, article_title,
-        article_view_count, article_comment_count, article_like_count,
-        article_create_time, article_update_time, article_is_comment,
-        article_status, article_order, article_content, article_summary
+            <if test="articleIsComment != null">#{articleIsComment, jdbcType=BOOLEAN},</if>
+            <if test="articleStatus != null">#{articleStatus, jdbcType=TINYINT},</if>
+            <if test="articleSummary != null">#{articleSummary, jdbcType=VARCHAR},</if>
+        </trim>
     </sql>
 
-    <insert id="insert" parameterType="com.nju.agile.blog.entity.Article" keyProperty="articleId" useGeneratedKeys="true">
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="article_id" keyProperty="articleId" parameterType="com.blog.entity.Article">
         insert into
-        <include refid="table"/>
-        (<include refid="base_list"/>)
-        values
-        (#{articleId,jdbcType=INTEGER}, #{articleUserId,jdbcType=INTEGER}, #{articleTitle,jdbcType=VARCHAR},
-        #{articleViewCount,jdbcType=INTEGER},#{articleCommentCount,jdbcType=INTEGER},#{articleLikeCount,jdbcType=INTEGER},
-        #{articleCreateTime,jdbcType=TIMESTAMP},#{articleUpdateTime,jdbcType=TIMESTAMP},#{articleIsComment,jdbcType=INTEGER},
-        #{articleStatus,jdbcType=INTEGER}, #{articleOrder,jdbcType=INTEGER}, #{articleContent,jdbcType=LONGVARCHAR}, #{articleSummary,jdbcType=VARCHAR})
+        <include refid="table"/> (
+        <include refid="articleInfoColumn"/>
+        )
+        values (
+        <include refid="articleInfoValue"/>
+        )
     </insert>
 
-    <delete id="deleteById" parameterType="java.lang.Integer">
-        delete from
+    <select id="selectAll" resultType="Article">
+        select * 
+        from 
+        <include refid="table"></include>
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultType="Article">
+        select *
+        from
         <include refid="table"/>
         <where>
-            article_id = #{value,jdbcType=INTEGER}
+            article_id = #{value}
         </where>
-    </delete>
-    <delete id="deleteBatch" parameterType="java.util.List">
-        delete from
-        <include refid="table"/>
-        <if test="ids != null">
-            where article_id in
-            <foreach collection="ids" open="(" close=")" separator="," item="id">
-                #{id}
-            </foreach>
-        </if>
-    </delete>
+    </select>
 
-    <update id="update" parameterType="com.nju.agile.blog.entity.Article">
+    <update id="addViewCount" parameterType="Integer">
         update
         <include refid="table"/>
         <set>
-            <if test="articleUserId != null">article_user_id=#{articleUserId,jdbcType=INTEGER},</if>
-            <if test="articleTitle != null">article_title=#{articleTitle,jdbcType=VARCHAR},</if>
-            <if test="articleViewCount != null">article_view_count=#{articleViewCount,jdbcType=INTEGER},</if>
-            <if test="articleCommentCount != null">article_comment_count=#{articleCommentCount,jdbcType=INTEGER},</if>
-            <if test="articleLikeCount != null">article_like_count=#{articleLikeCount,jdbcType=INTEGER},</if>
-            <if test="articleCreateTime != null">article_create_time=#{articleCreateTime,jdbcType=TIMESTAMP},</if>
-            <if test="articleUpdateTime != null">article_update_time=#{articleUpdateTime,jdbcType=TIMESTAMP},</if>
-            <if test="articleIsComment != null">article_is_comment=#{articleIsComment,jdbcType=INTEGER},</if>
-            <if test="articleStatus != null">article_status=#{articleStatus,jdbcType=INTEGER},</if>
-            <if test="articleOrder != null">article_order=#{articleOrder,jdbcType=INTEGER},</if>
-            <if test="articleContent != null">article_content=#{articleContent,jdbcType=LONGVRCHAR},</if>
-            <if test="articleSummary != null">article_summary=#{articleSummary,jdbcType=VRCHAR},</if>
+            article_view_count = article_view_count+1
         </set>
         <where>
-            article_id = #{value,jdbcType=INTEGER}
+            article_id in (#{value })
         </where>
     </update>
-    <update id="updateArticleCommentCount" parameterType="java.lang.Integer">
-        update
-        <include refid="table"/>
-        set article_comment_count =
-            (select count(*) from comment where comment_artilce_id = article_id)
-        <where>
-            article_id = #{value,jdbcTpye=INTEGER}
-        </where>
-    </update>
-
-    <select id="selectByIdAndStatus" resultMap="BaseMap">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        <where>
-            <if test="status != null">article_status = ${status} and</if>
-            article_id = ${id}
-        </where>
-    </select>
-    <select id="nextArticle" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        <where>
-            article_id > #{value} and article_status = 1
-        </where>
-        order by article_id asc
-        limit 1
-    </select>
-    <select id="preArticle" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        <where>
-            article_id &lt; #{value} and article_status = 1
-        </where>
-        order by article_id asc
-        limit 1
-    </select>
-    <select id="selectLastUpdateArticle" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        <where>
-            article_status = 1
-        </where>
-        order by article_update_time desc
-        limit 1
-    </select>
-    <select id="listAll" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        ORDER BY article_status ASC, article_order DESC, article_id DESC
-        <!--源码中没用这个方法，我觉得listAll()应该把禁用文章也列出来，就没加where语句-->
-    </select>
-    <select id="listAllByCondition" resultType="com.nju.agile.blog.entity.Article">
-        select
-        a.*
-        from
-        article a
-        <where>
-            <if test="status != null"> a.article_status = #{status} and </if>
-            <if test="keywords != null"> a.article_title like concat(concat('%',#{keywords}),'%') and </if>
-            <if test="userId != null"> a.article_user_id = #{userId} and </if>
-            <if test="categoryId != null">
-                a.article_id in
-                (select distinct ac.article_id from
-                    article_category_ref ac where ac.category_id = #{categoryId}) and
-            </if>
-            <if test="tagId != null">
-                a.article_id in
-                ( select distinct at.article_id from
-                    article_tag_ref at where at.tag_id = #{tagId}) and
-            </if>
-        </where>
-        order by `a`.`article_order` desc , `a`.`article_id` asc
-    </select>
-    <select id="listAllWithoutContent" resultType="com.nju.agile.blog.entity.Article">
-        select
-        article_id, article_user_id, article_title, article_creat_time
-        from
-        <include refid="table"/>
-        where article_status = 1
-        order by article_id desc
-    </select>
-    <select id="listArticleByViewCount" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        where article_status = 1
-        order by article_view_count desc, articcle_order desc, article_id asc
-        limit #{limit}
-    </select>
-    <select id="listRandomArticle" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        where article_status = 1
-        order by rand()
-        limit #{limit}
-    </select>
-    <select id="listArticleByCommentCount" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        where article_status = 1
-        order by article_comment_count desc, article_order desc, article_id asc
-        limit #{limit}
-    </select>
-    <select id="selectArticleByCategoryId" resultType="com.nju.agile.blog.entity.Article">
-        select
-        a.*
-        from
-        article a
-        <where>
-            <if test="id != null">
-                a.article_id in (
-                select ac.article_id from article_category_ref ac where ac.category_id = #{id}
-                ) and
-            </if>
-            a.article_status = 1
-        </where>
-        limit #{limit}
-    </select>
-    <select id="selectArticleByCategoryIds" resultType="com.nju.agile.blog.entity.Article">
-        select
-        a.*
-        from
-        article a
-        left join
-        article_category_ref ac
-        on a.article_id = ac.article_id
-        <where>
-            a.article_status = 1
-            <if test="ids != null">
-                and ac.category_id in
-                <foreach collection="ids" open="(" close=")" separator="," item="id">
-                    #{id}
-                </foreach>
-            </if>
-        </where>
-        limit #{limit}
-    </select>
-    <select id="listNewestArticle" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        where article_status = 1
-        order by article_create_time desc, article_order desc, article_id asc
-        limit #{limit}
-    </select>
-    <select id="countArticle" resultType="com.nju.agile.blog.entity.Article">
-        select sum(*)
-        from
-        <include refid="table"/>
-        where article_status = 1
-    </select>
-    <select id="countArticleComment" resultType="com.nju.agile.blog.entity.Article">
-        select sum(article_comment_count)
-        from
-        <include refid="table"/>
-        where article_status = 1
-    </select>
-    <select id="countArticleView" resultType="com.nju.agile.blog.entity.Article">
-        select sum(count_article_view)
-        from
-        <include refid="table"/>
-        where article_status = 1
-    </select>
-    <select id="countArticleByUser" resultType="com.nju.agile.blog.entity.Article">
-        select sum(count_article_id)
-        from
-        <include refid="table"/>
-        where article_status = 1 and article_user_id = #{value}
-    </select>
-    <select id="pageArticle" resultType="com.nju.agile.blog.entity.Article">
-        select
-        <include refid="base_list"/>
-        from
-        <include refid="table"/>
-        <where>
-            <if test="status != null"> article_status = ${status}</if>
-        </where>
-        order by article_status asc, article_order desc, article_id asc
-        limit ${pageIndex}, ${pageSize}
-        <!-- 从第1+pageIndex个数据开始取数据，取pageSize条数据 -->
-    </select>
 
 </mapper>

@@ -1,33 +1,59 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.nju.agile.blog.mapper.CommentMapper">
-
-    <resultMap id="BaseMapper" type="com.nju.agile.blog.entity.Comment">
-        <id property="commentId" column="comment_id" jdbcType="INTEGER"/>
-        <result property="commentPid" column="comment_pid" jdbcType="VARCHAR"/>
-        <result property="commentPname" column="comment_pname" jdbcType="VARCHAR"/>
-
-        <result property="commentArticleId" column="comment_article_id" jdbcType="INTEGER"/>
-        <result property="commentAuthorName" column="comment_author_name" jdbcType="VARCHAR"/>
-        <result property="commentAuthorEmail" column="comment_author_email" jdbcType="VARCHAR"/>
-
-        <result property="commentAuthorUrl" column="comment_author_url" jdbcType="VARCHAR"/>
-        <result property="commentAuthorAvatar" column="comment_author_avatar" jdbcType="VARCHAR"/>
-        <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
-
-        <result property="commentAgent" column="comment_agent" jdbcType="VARCHAR"/>
-        <result property="commentIp" column="comment_ip" jdbcType="VARCHAR"/>
-        <result property="commentCreateTime" column="comment_create_time" jdbcType="TIMESTAMP"/>
-        <result property="commentRole" column="comment_role" jdbcType="INTEGER"/>
-    </resultMap>
-
+<mapper namespace="com.blog.Mapper.CommentMapper">
     <sql id="table">comment</sql>
-    <sql id="base_list">
-        comment_id, comment_pid, comment_pname,
-        comment_article_id, comment_author_name, comment_author_email,
-        comment_author_url, comment_author_avatar, comment_content,
-        comment_agent, comment_ip, comment_create_time, comment_role
+
+    <sql id="commentInfoColumn">
+        <trim suffixOverrides=",">
+            <if test="userId != null"> user_id,</if>
+            <if test="userName != null"> user_name,</if>
+            <if test="articleId != null"> article_id,</if>
+            <if test="commentPid != null"> comment_pid,</if>
+            <if test="commentTargetId != null"> comment_target_id,</if>
+            <if test="commentTargetName != null"> comment_target_name,</if>
+            <if test="commentCreateTime != null"> comment_create_time,</if>
+            <if test="commentContent != null"> comment_content,</if>
+        </trim>
     </sql>
 
+    <sql id="commentInfoValue">
+        <trim suffixOverrides=",">
+            <if test="userId != null"> #{userId, jdbcType=INTEGER},</if>
+            <if test="userName != null"> #{userName, jdbcType=VARCHAR},</if>
+            <if test="articleId != null"> #{articleId, jdbcType=INTEGER},</if>
+            <if test="commentPid != null"> #{commentPid, jdbcType=INTEGER},</if>
+            <if test="commentTargetId != null"> #{commentTargetId, jdbcType=INTEGER},</if>
+            <if test="commentTargetName != null"> #{commentTargetName, jdbcType=VARCHAR},</if>
+            <if test="commentCreateTime != null"> #{commentCreateTime, jdbcType=TIMESTAMP},</if>
+            <if test="commentContent != null">  #{commentContent, jdbcType=VARCHAR},</if>
+        </trim>
+    </sql>
+
+
+    <insert id="insert" parameterType="Comment">
+        insert into
+        <include refid="table"/>
+        (<include refid="commentInfoColumn"></include>)
+        values
+        (<include refid="commentInfoValue"/>)
+
+    </insert>
+
+    <select id="countByArticleId" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from
+        <include refid="table"/>
+        <where>
+            article_id = #{values}
+        </where>
+    </select>
+    <select id="selectCommentByArticleId" parameterType="Integer" resultType="Comment">
+        select *
+        from
+        <include refid="table"/>
+        <where>
+            article_id = #{value}
+        </where>
+    </select>
 
 </mapper>

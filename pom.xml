@@ -106,7 +106,7 @@
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
-      <version>3.4.5</version>
+      <version>3.4.0</version>
     </dependency>
     <dependency>
       <groupId>org.mybatis</groupId>
@@ -196,12 +196,15 @@
       <version>26.0-jre</version>
     </dependency>
 
-    <!--运行时进不来，暂时手动添加jar包-->
+    <!--分页器-->
     <dependency>
       <groupId>com.github.pagehelper</groupId>
       <artifactId>pagehelper</artifactId>
       <version>4.2.1</version>
     </dependency>
+
+
+    <!--  json工具类  -->
     <dependency>
       <groupId>com.alibaba</groupId>
       <artifactId>fastjson</artifactId>

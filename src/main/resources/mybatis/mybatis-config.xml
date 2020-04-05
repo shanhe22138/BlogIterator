@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <properties resource="db.properties"></properties>
+
     <!-- 全局配置 -->
     <settings>
         <!--允许 JDBC 支持自动生成主键-->
