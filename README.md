@@ -2,4 +2,4 @@
 
 ## 项目简介
 
-使用
+使用Spring/SpringMVC/Mybatis框架完成的博客项目
