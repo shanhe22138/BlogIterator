@@ -21,4 +21,6 @@ public interface CommentMapper {
     List<Comment> selectCommentByArticleId(Integer id);
 
     List<Comment> findByCommentPid(Integer commentPid);
+
+    void deleteById(int id);
 }

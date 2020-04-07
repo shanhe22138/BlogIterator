@@ -19,7 +19,7 @@ public class UserController {
          * TODO
          * model.addAttribute("user", userService(id));
          */
-        System.out.println(id);
+        //System.out.println(id);
         if(id == -1) {
             return "login";
         }

@@ -15,4 +15,6 @@ public interface ICommentService {
     List<Comment> findByArticleId(Integer id);
 
     List<Comment> findReplay(Integer commentPid);
+
+    void removeById(int id);
 }

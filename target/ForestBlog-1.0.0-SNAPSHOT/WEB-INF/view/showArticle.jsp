@@ -251,13 +251,13 @@
                             <button class="btn btn-white btn-xs" type="button">Modern</button>
                         </div>
                         <div class="text-center article-title">
+                            <h1>
+                                ${article.articleTitle}
+                            </h1>
                             <span class="text-muted">
                                 <i class="fa fa-clock-o"></i>
                                 <fmt:formatDate value="${article.articleUpdateTime}" type="both"/>
                             </span>
-                            <h1>
-                                ${article.articleTitle}
-                            </h1>
                         </div>
                         <p>
                                 ${article.articleContent}
@@ -324,9 +324,10 @@
                                                     <ul class="list-unstyled list-inline">
                                                         <c:if test="${comment.userId == sessionScope.user.userId}">
                                                             <li>
-                                                                <a href="/comment/remove/${comment.commentId}" class="btn btn-sm btn-primary m-t-n-xs">
+                                                                <button onclick="removeComment(${comment.commentId})"
+                                                                        class="btn btn-sm btn-primary m-t-n-xs">
                                                                     删除
-                                                                </a>
+                                                                </button>
                                                             </li>
                                                         </c:if>
                                                         <c:if test="${comment.commented}">
@@ -454,6 +455,25 @@
                 document.getElementById(a).style.display = '';
             }
         }
+
+        function removeComment(commentId) {
+            $.ajax({
+                async: false,
+                url: "/comment/remove",
+                type: "GET",
+                data:{
+                    "commentId" : commentId
+                },
+                dataType: "json",
+                success: function () {
+                    window.location.reload();
+                },
+                error: function() {
+                    alert("服务器异常");
+                }
+            })
+        }
+
         function submit_1(commentTargetId, commentPid, commentTargetName) {
             let userId = <%=userId%>
             if(userId === -1) {
@@ -482,6 +502,7 @@
             }
 
         }
+
     </script>
 
 

@@ -72,5 +72,12 @@
         </where>
         Order by comment_create_time
     </select>
+    <delete id="deleteById" parameterType="Integer">
+        delete from
+        <include refid="table"/>
+        <where>
+            comment_id = #{value }
+        </where>
+    </delete>
 
 </mapper>
