@@ -14,7 +14,7 @@ import java.util.List;
 public interface CommentMapper {
     Integer insert(Comment comment);
 
-    Integer countByIArticled(Integer id);
+    Integer countByArticleId(Integer id);
 
     List<Comment> selectCommentByArticleId(Integer id);
 }

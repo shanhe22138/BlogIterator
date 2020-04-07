@@ -25,4 +25,9 @@ public class CommentMapperTest {
         List<Comment> list = mapper.selectCommentByArticleId(1);
         System.out.println(list);
     }
+    
+    @Test
+    public void countByArticleId() {
+        System.out.println(mapper.countByArticleId(1));
+    }
 }

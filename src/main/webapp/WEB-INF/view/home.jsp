@@ -263,11 +263,13 @@
                                                     </c:forEach>
                                                 </c:if>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="small text-right">
-                                                    <h5>Stats:</h5>
-                                                    <div> <i class="fa fa-comments-o"> </i> ${a.articleCommentCount} comments </div>
-                                                    <i class="fa fa-eye"> </i> ${a.articleViewCount} views
+                                            <div class="col-md-4 pull-right">
+                                                <div class="small pull-left">
+                                                    <h5 class="text-left">Stats:</h5>
+                                                    <div>
+                                                        <i class="fa fa-comments-o"> </i> ${a.articleCommentCount} comments
+                                                        <i class="fa fa-eye"> </i> ${a.articleViewCount} views
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

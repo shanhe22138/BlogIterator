@@ -35,11 +35,8 @@ public class ArticleServiceImpl implements IArticleService {
     private TagMapper tagMapper;
 
     private void completeArticle(Article article) {
-        if(article.isArticleIsComment()) {
-            article.setArticleCommentCount(commentMapper.countByIArticled(article.getArticleId()));
-        } else {
-            article.setArticleCommentCount(0);
-        }
+
+        article.setArticleCommentCount(commentMapper.countByArticleId(article.getArticleId()));
 
         article.setTags(tagMapper.selectById(article.getArticleId()));
 

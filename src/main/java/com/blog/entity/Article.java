@@ -31,6 +31,10 @@ public class Article implements Serializable {
 
     private Date articleUpdateTime;
 
+    /**
+     * TODO
+     * 属性没啥用，下次删掉
+     */
     private boolean articleIsComment;
 
     /**
