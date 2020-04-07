@@ -97,7 +97,7 @@ public class AdminController {
         String password = request.getParameter("password");
 
         User user = new User();
-        if(uname.matches("\\d*")) {
+        if(uname.matches("\\d+")) {
             user.setUserPhoneNumber(uname);
         } else {
             user.setUserEmail(uname);

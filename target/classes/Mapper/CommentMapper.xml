@@ -63,5 +63,14 @@
             article_id = #{value}
         </where>
     </select>
+    <select id="findByCommentPid" parameterType="Integer" resultType="Comment">
+        select *
+        from
+        <include refid="table"/>
+        <where>
+            comment_pid = #{value} or comment_id = #{value}
+        </where>
+        Order by comment_create_time
+    </select>
 
 </mapper>

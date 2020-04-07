@@ -33,6 +33,18 @@ public class ArticleController {
     @Autowired
     private ICommentService commentService;
 
+    private Article findArticleById(int id) {
+        if(id < 1) {
+            return null;
+        }
+        return articleService.findById(id);
+    }
+
+    private void addArticleDetail(Model model, Article article, List<Comment> comments) {
+        model.addAttribute("article", article);
+        model.addAttribute("comments", comments);
+    }
+
     @RequestMapping(value = "/article")
     public String article() {
         return "article";
@@ -42,7 +54,7 @@ public class ArticleController {
     public String saveArticle(HttpSession session, ArticleParam articleParam) {
         User user = (User) session.getAttribute("user");
 
-        System.out.println(articleParam);
+        //System.out.println(articleParam);
         Article article = new Article();
         if(user != null) {
             article.setUserId(user.getUserId());
@@ -56,7 +68,7 @@ public class ArticleController {
         if(summaryText.length() < Constant.SUMMARY_MAX_LENGTH) {
             summary = summaryText;
         } else {
-            summary = summaryText.substring(0,150);
+            summary = summaryText.substring(0, Constant.SUMMARY_MAX_LENGTH);
         }
         article.setArticleSummary(summary);
 
@@ -77,11 +89,22 @@ public class ArticleController {
          * voewCount+1
          */
         articleService.addViewCount(id);
-        Article article = articleService.findById(id);
+        Article article = findArticleById(id);
         List<Comment> comments = commentService.findByArticleId(id);
-        System.out.println(comments);
-        model.addAttribute("article", article);
-        model.addAttribute("comments", comments);
+        //System.out.println(comments);
+        addArticleDetail(model, article, comments);
+
+        return "showArticle";
+    }
+
+    @RequestMapping("/article/comment/viewReplay/{articleId}/{commentPid}")
+    public String viewReplay(@PathVariable("articleId") Integer articleId,
+                                @PathVariable("commentPid") Integer commentPid, Model model) {
+        Article article = findArticleById(articleId);
+        //System.out.println(commentPid);
+        List<Comment> comments = commentService.findReplay(commentPid);
+        addArticleDetail(model, article, comments);
+
         return "showArticle";
     }
 }

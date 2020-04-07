@@ -28,14 +28,15 @@ public class CommentController {
     @RequestMapping(value = "/comment/save", method = RequestMethod.POST)
     @ResponseBody
     public String saveComment(HttpServletRequest request) {
-        System.out.println("comment进入服务器controller");
+        //System.out.println("comment进入服务器controller");
         HttpSession session = request.getSession();
         Comment comment = new Comment();
         User user = (User)session.getAttribute("user");
         String articleId = request.getParameter("articleId"),
                 commentTargetId = request.getParameter("commentTargetId"),
                     commentTargetName = request.getParameter("commentTargetName"),
-                        commentContent = request.getParameter("commentContent");
+                        commentContent = request.getParameter("commentContent"),
+                                commentPid = request.getParameter("commentPid");
         /**
          * TODO
          * targetName有一定的冗余，需要从数据库上做更改
@@ -45,6 +46,7 @@ public class CommentController {
         comment.setArticleId(Integer.parseInt(articleId));
         comment.setCommentTargetId(Integer.parseInt(commentTargetId));
         comment.setCommentTargetName(commentTargetName);
+        comment.setCommentPid(Integer.parseInt(commentPid));
         /**
          * TODO
          * 内容需要做排查，防止xss攻击

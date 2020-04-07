@@ -26,7 +26,7 @@ public class CommentServiceImpl implements ICommentService {
 
     private void completeComment(Comment comment) {
         User user = userMapper.selectById(comment.getUserId());
-        int num = commentMapper.countByArticleId(comment.getCommentId());
+        int num = commentMapper.countCommentedNum(comment.getCommentId());
         if(num > 0) {
             comment.setCommented(true);
         } else {
@@ -47,6 +47,16 @@ public class CommentServiceImpl implements ICommentService {
         List<Comment> comments = commentMapper.selectCommentByArticleId(id);
         for (Comment c:
              comments) {
+            completeComment(c);
+        }
+        return comments;
+    }
+
+    @Override
+    public List<Comment> findReplay(Integer commentPid) {
+        List<Comment> comments = commentMapper.findByCommentPid(commentPid);
+        for (Comment c :
+                comments) {
             completeComment(c);
         }
         return comments;

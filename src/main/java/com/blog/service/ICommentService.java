@@ -13,4 +13,6 @@ public interface ICommentService {
     Integer saveComment(Comment comment);
 
     List<Comment> findByArticleId(Integer id);
+
+    List<Comment> findReplay(Integer commentPid);
 }

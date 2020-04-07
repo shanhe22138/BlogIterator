@@ -16,7 +16,7 @@
 
 <%
     User s_user = (User) session.getAttribute("user");
-    String avatar = "def", nickname = "请登录";
+    String avatar = "/resource/img/profile_small.jpg", nickname = "请登录";
     int userId = -1;
     if(s_user != null) {
         avatar  = s_user.getUserAvatar();
@@ -274,7 +274,6 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="small text-right">
-                                    <h5>Stats:</h5>
                                     <div> <i class="fa fa-comments-o"> </i> ${article.articleCommentCount} comments </div>
                                     <i class="fa fa-eye"> </i> ${article.articleViewCount} views
                                 </div>
@@ -332,7 +331,8 @@
                                                         </c:if>
                                                         <c:if test="${comment.commented}">
                                                             <li>
-                                                                <a class="btn btn-sm btn-primary m-t-n-xs" href="comment/search/${article.articleId}&${comment.userId}">
+                                                                <a class="btn btn-sm btn-primary m-t-n-xs"
+                                                                   href="/article/comment/viewReplay/${article.articleId}/${comment.commentPid == 0 ? comment.commentId:comment.commentPid}">
                                                                     查看回复
                                                                 </a>
                                                             </li>
@@ -369,7 +369,9 @@
                                                                       required="required"></textarea>
                                                         </div>
                                                         <div class="text-right">
-                                                            <button onclick="submit_1(${comment.commentId}, '${comment.user.userNickname}')"
+                                                            <button onclick="submit_1(${comment.commentId},
+                                                                                            ${comment.commentPid == 0 ? comment.commentId:comment.commentPid},
+                                                                                                '${comment.user.userNickname}')"
                                                                     type="button" class="btn btn-sm btn-primary m-t-n-xs">
                                                                 <strong>发表评论</strong>
                                                             </button>
@@ -452,7 +454,7 @@
                 document.getElementById(a).style.display = '';
             }
         }
-        function submit_1(commentTargetId, commentTargetName) {
+        function submit_1(commentTargetId, commentPid, commentTargetName) {
             let userId = <%=userId%>
             if(userId === -1) {
                 alert("请登录后再评论");
@@ -466,6 +468,7 @@
                         "articleId" : ${article.articleId},
                         "commentContent" : commentContent,
                         "commentTargetId" : commentTargetId,
+                        "commentPid" : commentPid,
                         "commentTargetName" : commentTargetName,
                     },
                     dataType: "json",
