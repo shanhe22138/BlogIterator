@@ -95,12 +95,16 @@ public class AdminController {
     public String registerVerify(HttpServletRequest request) {
         String uname = request.getParameter("uname");
         String password = request.getParameter("password");
+        String nickname = request.getParameter("nickname");
 
         User user = new User();
         if(uname.matches("\\d+")) {
             user.setUserPhoneNumber(uname);
         } else {
             user.setUserEmail(uname);
+        }
+        if(nickname != null) {
+            user.setUserNickname(nickname);
         }
         user.setUserPassword(password);
         user.setUserRegisterTime(new Date());
