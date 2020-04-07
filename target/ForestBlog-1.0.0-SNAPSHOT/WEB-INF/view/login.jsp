@@ -54,7 +54,7 @@
                 <input type="email" class="form-control" placeholder="Username" name="user" value="<%=name%>" required="required">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" name="password" <%=password%> required="required">
+                <input type="password" class="form-control" placeholder="Password" name="password" value="<%=password%>" required="required">
             </div>
             <div class="checkbox">
                 <label>

@@ -26,6 +26,12 @@ public class CommentServiceImpl implements ICommentService {
 
     private void completeComment(Comment comment) {
         User user = userMapper.selectById(comment.getUserId());
+        int num = commentMapper.countByArticleId(comment.getCommentId());
+        if(num > 0) {
+            comment.setCommented(true);
+        } else {
+            comment.setCommented(false);
+        }
         comment.setUser(user);
     }
 
@@ -45,4 +51,6 @@ public class CommentServiceImpl implements ICommentService {
         }
         return comments;
     }
+
+
 }

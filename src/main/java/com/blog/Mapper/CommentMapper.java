@@ -16,5 +16,7 @@ public interface CommentMapper {
 
     Integer countByArticleId(Integer id);
 
+    Integer countCommentedNum(Integer commentId);
+
     List<Comment> selectCommentByArticleId(Integer id);
 }

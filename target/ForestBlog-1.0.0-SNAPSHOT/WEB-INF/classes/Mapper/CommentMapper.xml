@@ -47,6 +47,14 @@
             article_id = #{values}
         </where>
     </select>
+    <select id="countCommentedNum" parameterType="Integer" resultType="Integer">
+        select count(1)
+        from
+        <include refid="table"/>
+        <where>
+            comment_target_id = #{value}
+        </where>
+    </select>
     <select id="selectCommentByArticleId" parameterType="Integer" resultType="Comment">
         select *
         from

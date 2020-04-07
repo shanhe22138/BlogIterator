@@ -12,7 +12,7 @@
         <%
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-    %>
+        %>
 
 <%
     User s_user = (User) session.getAttribute("user");
@@ -323,13 +323,24 @@
                                             <div>
                                                 <div class="small text-right">
                                                     <ul class="list-unstyled list-inline">
+                                                        <c:if test="${comment.userId == sessionScope.user.userId}">
+                                                            <li>
+                                                                <a href="/comment/remove/${comment.commentId}" class="btn btn-sm btn-primary m-t-n-xs">
+                                                                    删除
+                                                                </a>
+                                                            </li>
+                                                        </c:if>
+                                                        <c:if test="${comment.commented}">
+                                                            <li>
+                                                                <a class="btn btn-sm btn-primary m-t-n-xs" href="comment/search/${article.articleId}&${comment.userId}">
+                                                                    查看回复
+                                                                </a>
+                                                            </li>
+                                                        </c:if>
                                                         <li>
-                                                            <a href="comment/search/${article.articleId}&${comment.userId}">
-                                                                查看回复
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <button type="button" class="btn btn-sm btn-primary m-t-n-xs" onclick="hide(${comment.commentId})">回复</button>
+                                                            <button type="button" class="btn btn-sm btn-primary m-t-n-xs" onclick="hide(${comment.commentId})">
+                                                                回复
+                                                            </button>
                                                         </li>
                                                     </ul>
                                                 </div>
