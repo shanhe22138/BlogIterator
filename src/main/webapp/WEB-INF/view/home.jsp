@@ -44,7 +44,7 @@
 %>
 
 <div id="wrapper">
-
+    <!--  左侧导航栏  -->
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
@@ -86,7 +86,7 @@
 
     <div id="page-wrapper" class="gray-bg">
 
-
+        <!--  上方导航栏  -->
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
@@ -239,8 +239,8 @@
             <div class="wrapper wrapper-content  animated fadeInRight blog">
                 <div class="row">
                     <div class="col-lg-6">
-                        <c:if test="${!empty articles}">
-                            <c:forEach items="${articles}" var="a">
+                        <c:if test="${!empty pageInfo.list}">
+                            <c:forEach items="${pageInfo.list}" var="a">
                                 <div class="ibox">
                                     <div class="ibox-content">
                                         <a href="/article/${a.articleId}" class="btn-link">
@@ -257,9 +257,11 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <h5>Tags:</h5>
-                                                <c:forEach items="${a.tags}" var="tag">
-                                                    <button class="btn  btn-white btn-xs" type="button">${tag.tagName}</button>
-                                                </c:forEach>
+                                                <c:if test="${!empty a.tags}">
+                                                    <c:forEach items="${a.tags}" var="tag">
+                                                        <button class="btn  btn-white btn-xs" type="button">${tag.tagName}</button>
+                                                    </c:forEach>
+                                                </c:if>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="small text-right">
@@ -277,26 +279,11 @@
                 </div>
 
 
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="page">
+                    </ul>
+                </nav>
             </div>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li>
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </rapid:block>
 
         <div class="footer">
@@ -321,6 +308,30 @@
     <!-- Custom and plugin javascript -->
     <script src="<%=basePath%>/resource/js/inspinia.js"></script>
     <script src="<%=basePath%>/resource/js/plugins/pace/pace.min.js"></script>
+
+    <script type="text/javascript">
+        const ul = document.querySelector("#page");
+        let curPage = ${pageInfo.pageNum};
+        let star = curPage - 2 > 1 ? curPage-2 : 1;
+        let end = star + 4 > ${pageInfo.pages} ? ${pageInfo.pages} : star+4;
+        let html = "";
+        let start_flag = ${pageInfo.isLastPage};
+        if(! start_flag) {
+            html += '<li><a href="/home?pageNum=${pageInfo.prePage}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a></li>'
+        }
+        for(let i = star; i <= end; i++) {
+            if(i == curPage) {
+                html += '<li class="active"><a href="/home?pageNum='+i+'">'+i+'</a></li>';
+            } else {
+                html += '<li><a href="/home?pageNum='+i+'">'+i+'</a></li>';
+            }
+        }
+        let end_flag = ${pageInfo.isLastPage};
+        if(! end_flag) {
+            html += '<li><a href="/home?pageNum=${pageInfo.nextPage}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+        }
+        ul.innerHTML = html;
+    </script>
 </rapid:block>
 
 

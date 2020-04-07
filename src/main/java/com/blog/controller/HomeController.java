@@ -30,7 +30,7 @@ public class HomeController {
 
     @RequestMapping(value = {"/", "/home"})
     public String home(@RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                       @RequestParam(required = false, defaultValue = "9") Integer pageSize,
+                       @RequestParam(required = false, defaultValue = "6") Integer pageSize,
                        HttpSession session, Model model)/* throws ExecutionException, InterruptedException*/ {
         /**
          * TODO
@@ -46,7 +46,7 @@ public class HomeController {
 
         //获取文章列表
         PageInfo<Article> pageInfo = articleService.findByPage(pageNum, pageSize);
-        model.addAttribute("articles", pageInfo.getList());
+        model.addAttribute("pageInfo", pageInfo);
         return "home";
     }
 }

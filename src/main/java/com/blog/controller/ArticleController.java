@@ -66,7 +66,7 @@ public class ArticleController {
          */
         articleService.save(article);
 
-        return "home";
+        return "redirect:/home";
 
     }
 
