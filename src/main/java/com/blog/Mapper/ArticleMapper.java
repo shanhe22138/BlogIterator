@@ -4,6 +4,7 @@ import com.blog.entity.Article;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author shanhe
@@ -19,4 +20,8 @@ public interface ArticleMapper {
     Article selectById(Integer id);
 
     void addViewCount(Integer id);
+
+    List<Article> selectByUserId(Integer userId);
+
+    List<Article> selectByQuery(String query);
 }

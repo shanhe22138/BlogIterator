@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author shanhe
@@ -44,6 +45,16 @@ public class ArticleServiceImpl implements IArticleService {
 
     }
 
+    private void completeArticle(List<Article> articles) {
+        for(Article article :
+                articles) {
+            //封装标签，可使用SQL优化
+            //优化思路是取出所有articleID，然后一次性查出所有标签，再以空格分割标签，以"，"分割文章
+            //返回一个字符串再做操作
+            completeArticle(article);
+        }
+    }
+
     @Override
     public Integer save(Article article) {
 
@@ -56,13 +67,7 @@ public class ArticleServiceImpl implements IArticleService {
     public PageInfo<Article> findByPage(int pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         ArrayList<Article> articles = articleMapper.selectAll();
-        for(Article article :
-            articles) {
-            //封装标签，可使用SQL优化
-            //优化思路是取出所有articleID，然后一次性查出所有标签，再以空格分割标签，以"，"分割文章
-            //返回一个字符串再做操作
-            completeArticle(article);
-        }
+        completeArticle(articles);
         return new PageInfo<>(articles);
     }
 
@@ -78,6 +83,22 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public void addViewCount(Integer id) {
         articleMapper.addViewCount(id);
+    }
+
+    @Override
+    public PageInfo<Article> findByUserId(Integer userId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Article> articles = articleMapper.selectByUserId(userId);
+        completeArticle(articles);
+        return new PageInfo<>(articles);
+    }
+
+    @Override
+    public PageInfo<Article> findPageByQuery(String query, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Article> articles = articleMapper.selectByQuery(query);
+        completeArticle(articles);
+        return new PageInfo<>(articles);
     }
 
 }

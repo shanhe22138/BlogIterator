@@ -19,4 +19,8 @@ public interface IArticleService {
     Article findById(Integer id);
 
     void addViewCount(Integer id);
+
+    PageInfo<Article> findByUserId(Integer userId, Integer pageNum, Integer pageSize);
+
+    PageInfo<Article> findPageByQuery(String query, Integer pageNum, Integer pageSize);
 }

@@ -77,4 +77,21 @@
         </where>
     </update>
 
+    <select id="selectByUserId" parameterType="Integer" resultType="Article">
+        select *
+        from
+        <include refid="table"/>
+        <where>
+            user_id = ${value }
+        </where>
+    </select>
+    <select id="selectByQuery" parameterType="String" resultType="Article">
+        select *
+        from
+        <include refid="table"/>
+        <where>
+            article_title like concat('%', #{value }, '%')
+        </where>
+    </select>
+
 </mapper>

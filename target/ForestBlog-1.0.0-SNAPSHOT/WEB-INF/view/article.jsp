@@ -55,11 +55,11 @@
                             <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
                              </span> <span class="text-muted text-xs block">Art Director <b class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">个人主页</a></li>
-                            <li><a href="contacts.html">关注</a></li>
-                            <li><a href="mailbox.html">粉丝</a></li>
+                            <li><a href="/user/1">个人主页</a></li>
+                            <li><a href="/attention">关注</a></li>
+                            <li><a href="/fans">粉丝</a></li>
                             <li class="divider"></li>
-                            <li><a href="login.html">退出</a></li>
+                            <li><a href="/logout">退出</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
@@ -68,13 +68,13 @@
                 </li>
 
                 <li>
-                    <a href="layouts.html"><i class="fa fa-heart"></i> <span class="nav-label">我的收藏</span></a>
+                    <a href="/user/collection"><i class="fa fa-heart"></i> <span class="nav-label">我的收藏</span></a>
                 </li>
                 <li>
-                    <a href="layouts.html"><i class="fa fa-paper-plane"></i> <span class="nav-label">我的发布</span></a>
+                    <a href="/user/articles"><i class="fa fa-paper-plane"></i> <span class="nav-label">我的发布</span></a>
                 </li>
                 <li>
-                    <a href="layouts.html"><i class="fa fa-pencil"></i> <span class="nav-label">写文章</span></a>
+                    <a href="/article"><i class="fa fa-pencil"></i> <span class="nav-label">写文章</span></a>
                 </li>
 
             </ul>
@@ -86,10 +86,10 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="/article#"><i class="fa fa-bars"></i> </a>
-                    <form role="search" class="navbar-form-custom" action="search_results.html">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <form role="search" class="navbar-form-custom" action="/top-search" method="post">
                         <div class="form-group">
-                            <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                            <input type="text" placeholder="Search for something..." class="form-control" name="top_search" id="top-search">
                         </div>
                     </form>
                 </div>
